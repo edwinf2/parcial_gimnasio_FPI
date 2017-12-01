@@ -117,7 +117,7 @@
         </div>
         <h3>Balance Salarial</h3>
         <hr/>
-        <form action="bal_pay_submit.php" enctype="multipart/form-data" method="POST" role="form" class="form-horizontal form-groups-bordered">
+        <form action="enviarpagobalance.php" enctype="multipart/form-data" method="POST" role="form" class="form-horizontal form-groups-bordered">
           <?php
             $consulta  = "select * from suscripcion WHERE factura='$factura'";
             $result = mysqli_query($con, $consulta);
@@ -176,12 +176,12 @@
     <script src="../../js/neonjs/neon-demo.js" id="script-resource-10"></script>
 
     <script type="text/javascript">
-      var campotexto1 = new Spry.Widget.ValidationTextField("campotexto1");
-      var campotexto2 = new Spry.Widget.ValidationTextField("campotexto2");
-      var seleccion1 = new Spry.Widget.ValidationSelect("seleccion1");
-      var campotexto3 = new Spry.Widget.ValidationTextField("campotexto3");
-      var campotexto4 = new Spry.Widget.ValidationTextField("campotexto5");
-      var seleccion2 = new Spry.Widget.ValidationSelect("seleccion2");
+      var sprytextfield1 = new Spry.Widget.ValidationTextField("sprytextfield1");
+      var sprytextfield2 = new Spry.Widget.ValidationTextField("sprytextfield2");
+      var spryselect1 = new Spry.Widget.ValidationSelect("spryselect1");
+      var sprytextfield3 = new Spry.Widget.ValidationTextField("sprytextfield3");
+      var sprytextfield4 = new Spry.Widget.ValidationTextField("sprytextfield4");
+      var spryselect2 = new Spry.Widget.ValidationSelect("spryselect2");
     </script>
 
   </body>

@@ -133,7 +133,7 @@
     							}
 
     						?>
-    						<input type="text" name="p_id" value="<?php echo getRandomWord(); ?>" class="form-control"  readonly/>
+    						<input type="text" name="pid" value="<?php echo getRandomWord(); ?>" class="form-control"  readonly/>
     					</div>
     			</div>
     			<div class="form-group">

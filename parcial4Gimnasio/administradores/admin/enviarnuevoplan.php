@@ -3,7 +3,7 @@
   proteccionPagina();
   if (isset($_POST['pid'])) {
 
-      $nombrecontrato    = rtrim($_POST['nombrecontrato']);
+      $nombrecontrato    = rtrim($_POST['nombre']);
       $detalles = rtrim($_POST['detalles']);
       $dias    = rtrim($_POST['dias']);
       $precio    = rtrim($_POST['precio']);
