@@ -163,7 +163,7 @@
   </head>
   <body>
     <header>
-			<a href="new_entry.php"><h1>Recibo (Nuevo Registro)</h1></a>
+			<a href="nuevoregistro.php"><h1>Recibo (Nuevo Registro)</h1></a>
 			<address>
 				<p>Gimnasio FPI</p>
 				<p>UES</p>

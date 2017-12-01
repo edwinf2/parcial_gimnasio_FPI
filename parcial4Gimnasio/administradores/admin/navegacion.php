@@ -1,3 +1,6 @@
+<head>
+  <link rel="stylesheet" href="vermiembro.php">
+</head>
 <ul id="main-menu" class="">
   <li class="active opened active">
     <a href="index.php">
@@ -25,7 +28,7 @@
 		<ul>
 			<li class="active">
 				<a href="vermiembro.php">
-          <span>Ver Miembros</span>
+          <span onclick="miembros();">Ver Miembros</span>
         </a>
       </li>
 			<li>

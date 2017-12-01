@@ -150,7 +150,7 @@
     									webcam.snap();
     								}
     						</script>
-    						<input type="button"  class="btn btn-primary" value="Take Snapshot" onClick="take_snapshot()">
+    						<input type="button"  class="btn btn-primary" value="Tomar Foto" onClick="take_snapshot()">
     					</div>
     			</div>
     			<div class="form-group">
@@ -285,7 +285,6 @@
     								if (mysqli_affected_rows($con) != 0) {
     								    while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
     								        echo "<option value=" . $row['idtipomemoria'] . ">" . $row['nombrecontrato'] . "</option>";
-
     								    }
     								}
     							?>

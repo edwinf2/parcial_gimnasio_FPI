@@ -1,6 +1,8 @@
 <?php
   require 'conexiondb.php';
   proteccionPagina();
+  if (isset($_POST['nombre'])) {
+      $nombre = $_POST['nombre'];
 ?>
 <!DOCTYPE html>
 <html>
@@ -111,72 +113,75 @@
               </li>
             </ul>
           </div>
-
         </div>
-
-        <h3>Gimnasio FPI</h3>
-
+        <h3>Editar Factura</h3>
         <hr/>
-        <table class="table table-bordered datatable" id="tabla1">
-          <thead>
-            <tr>
-              <th>Nombre / ID Miembro</th>
-              <th>Fecha de inscripcion</th>
-              <th>Email</th>
-              <th>direccion</th>
-              <th>Años</th>
-              <th>Altura</th>
-            </tr>
-          </thead>
-          <tbody id="miembro">
+        <form action="editarenviopagos.php" enctype="multipart/form-data" method="POST" role="form" class="form-horizontal form-groups-bordered">
+  			<?php
+  			    $consulta  = "select * from suscripcion WHERE factura='$nombre'";
+  			    $result = mysqli_query($con, $consulta);
+  			    $contador  = 1;
 
-          </tbody>
-      </table>
-      <script type="text/javascript">
-      function miembros(){
-        var miembros;
-        var xhttp=new XMLHttpRequest();
-        xhttp.onreadystatechange=function(){
-          if (this.readyState==4 && this.status==200) {
-            miembros=JSON.parse(this.responseText);
-            var tabla=document.getElementById("miembro");
-            var tr=document.createElement("tr");
-            var td1=document.createElement("td");
-            var td2=document.createElement("td");
-            var td3=document.createElement("td");
-            var td4=document.createElement("td");
-            var td5=document.createElement("td");
-            var td6=document.createElement("td");
+  			    if (mysqli_affected_rows($con) == 1) {
+  			        while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+  			            $idmiembro    = $row['idmiembro'];
+  			            $nombre      = $row['nombre'];
+  			            $fechapago = $row['fechapago'];
+  			        }
+  			    }
+  			?>
+  				<div class="form-group">
+  					<label for="field-1" class="col-sm-3 control-label">ID Membresia :</label>
+  						<div class="col-sm-5">
+  							<input type="text" name="pid" value="<?php echo $nombre;?>" class="form-control" readonly/>
+  						</div>
+  				</div>
+  				<div class="form-group">
+  					<label for="field-1" class="col-sm-3 control-label">Factura :</label>
+  						<div class="col-sm-5">
+  							<input type="text" name="factura" value="<?php echo $nombre; ?>" class="form-control" readonly/>
+  						</div>
+  				</div>
+  				<div class="form-group">
+  					<label for="field-1" class="col-sm-3 control-label">Nombre :</label>
+  						<div class="col-sm-5">
+  							<input type="text" name="pnombre" id="pnombre" class="form-control"  data-rule-required="true" data-rule-minlength="4" value="<?php echo $nombre;?>" placeholder="Nombre Miembro" maxlength="30" readonly/>
+  						</div>
+  				</div>
+  				<div class="form-group">
+  					<label for="field-1" class="col-sm-3 control-label">Fecha de Pago :</label>
+  						<div class="col-sm-5">
+  							<input type="text" name="fecha" id="fecha" class="form-control datepicker" value="<?php echo $fechapago; ?>">
+  						</div>
+  				</div>
+  				<div class="form-group">
+  					<label for="field-1" class="col-sm-3 control-label">Tipo Membresia :</label>
+  						<div class="col-sm-5">
+  							<select name="tipomiembro" id="id" data-rule-required="true" class="form-control" >
+  							<option value="">-- Porfavor seleccione --</option>
+  								<?php
+  								    $query = "select * from tiposmemoria";
+  								    $result = mysqli_query($con, $query);
 
-            td1.appendChild(document.createTextNode(miembro[0].nombre));
-            td2.appendChild(document.createTextNode(miembro[0].fechaInscripcion));
-            td3.appendChild(document.createTextNode(miembro[0].email));
-            td4.appendChild(document.createTextNode(miembro[0].direccion));
-            td5.appendChild(document.createTextNode(miembro[0].anios));
-            td6.appendChild(document.createTextNode(miembro[0].altura));
-            console.log("hola");
-          }
+  								    if (mysqli_affected_rows($con) != 0) {
+  								        while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+  								            echo "<option value=" . $row['idtipomemoria'] . ">" . $row['nombre'] . "</option>";
 
-        };
-        xhttp.open("GET", "192.168.43.201:8080/Gimnasio/webresources/gimnasio/datoUsuario/", true);
-        xhttp.send();
-      }
+  								        }
+  								    }
 
-      </script>
-      <script type="text/javascript">
-        jQuery(document).ready(function($){
-          $("#tabla1").dataTable({
-            "sPaginationType": "bootstrap",
-            "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-            "bStateSave": true
-          });
-          $(".dataTables_wrapper select").select2({
-            minimumResultsForSearch: -1
-          });
-        });
-      </script>
-      <?php include('piepagina.php'); ?>
-    </div>
+  								?>
+  							</select>
+  						</div>
+  				</div>
+  				<div class="form-group">
+  						<div class="col-sm-offset-3 col-sm-5">
+  							<button type="submit" class="btn btn-primary">Guardar Cambios</button>
+  						</div>
+  				</div>
+  			</form>
+  			<?php include('piepagina.php'); ?>
+      </div>
     </div>
 
 
@@ -190,21 +195,13 @@
     <script src="../../js/neonjs/neon-login.js" id="script-resource-8"></script>
     <script src="../../js/neonjs/neon-custom.js" id="script-resource-9"></script>
     <script src="../../js/neonjs/neon-demo.js" id="script-resource-10"></script>
+    <script src="../../js/neonjs/bootstrap-datepicker.js" id="script-resource-11"></script>
 
-  	<link rel="stylesheet" href="../../js/neonjs/select2/select2-bootstrap.css"  id="style-resource-1">
-  	<link rel="stylesheet" href="../../js/neonjs/select2/select2.css"  id="style-resource-2">
-
-  	<script src="../../js/neonjs/jquery.dataTables.min.js" id="script-resource-7"></script>
-  	<script src="../../js/neonjs/dataTables.bootstrap.js" id="script-resource-8"></script>
-  	<script src="../../js/neonjs/select2/select2.min.js" id="script-resource-9"></script>
-
-    <script type="text/javascript">
-  		var sprytextfield1 = new Spry.Widget.ValidationTextField("sprytextfield1");
-  		var sprytextfield2 = new Spry.Widget.ValidationTextField("sprytextfield2");
-  		var spryselect1 = new Spry.Widget.ValidationSelect("spryselect1");
-  		var sprytextfield3 = new Spry.Widget.ValidationTextField("sprytextfield3");
-  		var sprytextfield4 = new Spry.Widget.ValidationTextField("sprytextfield4");
-  		var spryselect2 = new Spry.Widget.ValidationSelect("spryselect2");
-    </script>
   </body>
 </html>
+<?php
+} else {
+    echo "<meta http-equiv='refresh' content='0; url=vermiembro.php'>";
+}
+?>
+Access Denied

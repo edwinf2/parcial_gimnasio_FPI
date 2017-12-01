@@ -1,2 +1,4 @@
 # parcial_gimnasio_FPI
-  Figuero Hernández Edwin Ernesto
+ 	Figueroa Hernández Edwin Ernesto
+	Gonzalez Figueroa David Edgardo
+	Rivas Diaz Julio Cesar
