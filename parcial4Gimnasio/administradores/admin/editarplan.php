@@ -2,8 +2,8 @@
   require 'conexiondb.php';
   proteccionPagina();
   if (isset($_POST['nombre'])) {
-      $idname = $_POST['nombre'];
-  }
+      $idnombre = $_POST['nombre'];
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -117,7 +117,7 @@
         </div>
         <h3>Editar detalles del plan</h3>
         <hr/>
-        <form action="submit_plan_edit.php" enctype="multipart/form-data" method="POST" role="form" class="form-horizontal form-groups-bordered">
+        <form action="enviarplaneditado.php" enctype="multipart/form-data" method="POST" role="form" class="form-horizontal form-groups-bordered">
 
           <?php
             $consulta="select * from tiposmemoria WHERE idtipomemoria='$idnombre'";
@@ -148,19 +148,19 @@
           <div class="form-group">
             <label for="field-1" class="col-sm-3 control-label">Detalles :</label>
             <div class="col-sm-5">
-              <input type="text" name="detalles"  id="detalles" class="form-control" value ='<?php echo $detalles; ?>'  data-rule-minlength="5" placeholder="E-Mail" maxlength="999">
+              <input type="text" name="detalles"  id="detalles" class="form-control" value ='<?php echo $detalles; ?>'  data-rule-minlength="5" placeholder="Detalles" maxlength="999">
             </div>
           </div>
           <div class="form-group">
             <label for="field-1" class="col-sm-3 control-label">Dias :</label>
             <div class="col-sm-5">
-              <input type="text" name="dias" id="dias" class="form-control" data-rule-required="true" data-rule-minlength="1" placeholder="Days" value ='<?php echo $dias; ?>'  onKeyPress="return checkIt(event)" maxlength="3">
+              <input type="text" name="dias" id="dias" class="form-control" data-rule-required="true" data-rule-minlength="1" placeholder="Dias" value ='<?php echo $dias; ?>'  onKeyPress="return checkIt(event)" maxlength="3">
             </div>
           </div>
           <div class="form-group">
             <label for="field-1" class="col-sm-3 control-label">Precio :</label>
             <div class="col-sm-5">
-              <input type="text" name="precio" id="precio" class="form-control" data-rule-required="true" data-rule-minlength="10" placeholder="Mobile / Phone" value ='<?php echo $precio; ?>'  onKeyPress="return checkIt(event)" maxlength="10">
+              <input type="text" name="precio" id="precio" class="form-control" data-rule-required="true" data-rule-minlength="10" placeholder="Precio" value ='<?php echo $precio; ?>'  onKeyPress="return checkIt(event)" maxlength="10">
             </div>
           </div>
           <div class="form-group">
@@ -185,3 +185,9 @@
 
   </body>
 </html>
+<?php
+} else {
+    echo "<meta http-equiv='refresh' content='0; url=vermiembro.php'>";
+}
+?>
+Access Denied

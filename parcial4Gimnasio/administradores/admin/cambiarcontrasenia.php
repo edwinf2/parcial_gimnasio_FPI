@@ -112,75 +112,47 @@
             </ul>
           </div>
         </div>
-        <h2>Lista de miembros pendientes de pago</h2>
+        <h3>Cambiar Contraseña</h3>
         <hr/>
-        <table class="table table-bordered datatable" id="tabla1">
-          <thead>
-            <tr>
-              <th>S.No</th>
-              <th>Recibo</th>
-              <th>Id Miembro</th>
-              <th>Nombre</th>
-              <th>Nombre del Plan</th>
-              <th>Fecha de Pago</th>
-              <th>Total / Pagado</th>
-              <th>Saldo</th>
-              <th>Expiración</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php
-              $consulta="select * from suscripcion WHERE balance>0 ORDER BY balance DESC";
-              $result=mysqli_query($con, $consulta);
-              $contador=1;
-              $contadorbal=0;
-              if (mysqli_affected_rows($con) != 0) {
-                while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-                  $cambiar   = $row['idmiembro'];
-                  $consulta1  = "select * from datosusuario WHERE cambiar='$cambiar'";
-                  $result1 = mysqli_query($con, $consulta1);
-                  if (mysqli_affected_rows($con) == 1) {
-                    while ($row1 = mysqli_fetch_array($result1, MYSQLI_ASSOC)) {
-                      echo "<td>" . $contador . "</td>";
-                      echo "<td>" . $row['factura'] . "</td>";
-                      echo "<td>" . $cambiar . "</td>";
-                      echo "<td>" . $row['nombre'] . "<img src='" . $row1['addfoto'] . "'></td>";
-                    }
-                  }
-                  echo "<td>" . $row['nombretiposuscripcion'] . "</td>";
-                  echo "<td>" . $row['fechapago'] . "</td>";
-                  echo "<td>" . $row['total'] . " / " . $row['pagado'] . "</td>";
-                  echo "<td>" . $row['balance'] . "</td>";
-                  echo "<td>" . $row['expiracion'] . "</td>";
-                  $contador++;
+        <form action="cambiarcontrasenia2.php" enctype="multipart/form-data" method="POST" role="form" class="form-horizontal form-groups-bordered">
+    			<div class="form-group">
+    				<label for="field-1" class="col-sm-3 control-label">Id:</label>
+    					<div class="col-sm-5">
+    						<input type="text" name="idusuario" value="<?php echo $_SESSION['datosusuario']; ?>" class="form-control" readonly/>
+    					</div>
+    			</div>
+    			<div class="form-group">
+    				<label for="field-1" class="col-sm-3 control-label">Clave Acceso:	</label>
+    					<div class="col-sm-5">
+    						<input type="text" name="iduser"  class="form-control"  data-rule-required="true" placeholder="Tu contraseña secreta">
+    					</div>
+    			</div>
 
-                  echo "<td><form action='pagobalance.php' method='post'><input type='hidden' name='nombre' value='" . $row['factura'] . "'/><input type='submit' value='Balance de Pago ' class='btn btn-info'/></form></td></tr>";
-                  $cambiar  = 0;
-                  $contadorbal = $row['balance'] + $contadorbal;
-                }
-              }
-            ?>
-          </tbody>
-        </table>
-        <h3>Importe total sin pagar: <?php echo $contadorbal; ?></h3>
+    			<div class="form-group">
+    				<label for="field-1" class="col-sm-3 control-label">Password :</label>
+    					<div class="col-sm-5">
+      						<input type="text" name="contrasenia" id="contrasenia" class="form-control"  data-rule-required="true" data-rule-minlength="6" placeholder="Tu nueva contraseña">
 
-        <script type="text/javascript">
-          jQuery(document).ready(function($){
-            $("#tabla1").dataTable({
-              "sPaginationType": "bootstrap",
-              "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-              "bStateSave": true
-            });
-            $(".dataTables_wrapper select").select2({
-              minimumResultsForSearch: -1
-            });
-          });
-        </script>
-        <?php include('piepagina.php'); ?>
+    					</div>
+    			</div>
+
+    			<div class="form-group">
+    				<label for="field-1" class="col-sm-3 control-label">Confirmar password :</label>
+    					<div class="col-sm-5">
+    						<input type="text" name="confircontrasenia" id="confircontrasenia" class="form-control"  data-rule-equalto="#contrasenia" data-rule-required="true" data-rule-minlength="6" placeholder="Confirmar tu contraseña">
+    					</div>
+    			</div>
+    			<div class="form-group">
+    					<div class="col-sm-offset-3 col-sm-5">
+    						<input type="submit" class="btn btn-primary" value="Submit">
+    						<button type="button" class="btn">Cancelar</button>
+    					</div>
+    			</div>
+
+    		</form>
+    			<?php include('piepagina.php'); ?>
       </div>
     </div>
-
 
     <script src="../../js/neonjs/gsap/main-gsap.js" id="script-resource-1"></script>
     <script src="../../js/neonjs/jquery-ui/js/jquery-ui-1.10.3.minimal.min.js" id="script-resource-2"></script>
@@ -192,11 +164,7 @@
     <script src="../../js/neonjs/neon-login.js" id="script-resource-8"></script>
     <script src="../../js/neonjs/neon-custom.js" id="script-resource-9"></script>
     <script src="../../js/neonjs/neon-demo.js" id="script-resource-10"></script>
-  	<link rel="stylesheet" href="../../js/neonjs/select2/select2-bootstrap.css"  id="style-resource-1">
-  	<link rel="stylesheet" href="../../js/neonjs/select2/select2.css"  id="style-resource-2">
-  	<script src="../../js/neonjs/jquery.dataTables.min.js" id="script-resource-7"></script>
-  	<script src="../../js/neonjs/dataTables.bootstrap.js" id="script-resource-8"></script>
-  	<script src="../../js/neonjs/select2/select2.min.js" id="script-resource-9"></script>
+    <script src="../../js/neonjs/bootstrap-datepicker.js" id="script-resource-11"></script>
 
     <script type="text/javascript">
       var campotexto1 = new Spry.Widget.ValidationTextField("campotexto1");

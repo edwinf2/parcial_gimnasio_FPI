@@ -9,7 +9,7 @@
   }else {
     mysqli_query($con, "DELETE FROM datosusuario WHERE esperar='yes'");
 
-    echo "<head><script>alert('Pwaitrofile NOT Added, Check Again');</script></head></html>";
+    echo "<head><script>alert('NO agregado, verifique de nuevo');</script></head></html>";
     echo "<meta http-equiv='refresh' content='0; url=nuevoregisto.php'>";
 
   }
@@ -170,10 +170,10 @@
 			<address>
 				<p>Gimnasio FPI</p>
 				<p>UES FMOcc</p>
-				<p>CBuscando nota</p><p>Haber....</p><br><p><div id="barcodeTarget" class="barcodeTarget"></div>
+				<p>Buscando nota</p><p>Haber....</p><br><p><div id="barcodeTarget" class="barcodeTarget"></div>
           <canvas id="canvasTarget"></canvas> </span>
 			</address>
-			<span><img alt="" src="../../img/logo.png">
+			<span><img alt="" src="../../img/login/logo.png">
 		</header>
     <article>
 			<table class="meta">

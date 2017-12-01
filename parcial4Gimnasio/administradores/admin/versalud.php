@@ -112,59 +112,51 @@
             </ul>
           </div>
         </div>
-        <h2>Lista de miembros pendientes de pago</h2>
+        <h3>Gimnasio FPI</h3>
         <hr/>
         <table class="table table-bordered datatable" id="tabla1">
-          <thead>
-            <tr>
-              <th>S.No</th>
-              <th>Recibo</th>
-              <th>Id Miembro</th>
-              <th>Nombre</th>
-              <th>Nombre del Plan</th>
-              <th>Fecha de Pago</th>
-              <th>Total / Pagado</th>
-              <th>Saldo</th>
-              <th>Expiración</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php
-              $consulta="select * from suscripcion WHERE balance>0 ORDER BY balance DESC";
-              $result=mysqli_query($con, $consulta);
-              $contador=1;
-              $contadorbal=0;
-              if (mysqli_affected_rows($con) != 0) {
-                while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-                  $cambiar   = $row['idmiembro'];
-                  $consulta1  = "select * from datosusuario WHERE cambiar='$cambiar'";
-                  $result1 = mysqli_query($con, $consulta1);
-                  if (mysqli_affected_rows($con) == 1) {
-                    while ($row1 = mysqli_fetch_array($result1, MYSQLI_ASSOC)) {
-                      echo "<td>" . $contador . "</td>";
-                      echo "<td>" . $row['factura'] . "</td>";
-                      echo "<td>" . $cambiar . "</td>";
-                      echo "<td>" . $row['nombre'] . "<img src='" . $row1['addfoto'] . "'></td>";
-                    }
-                  }
-                  echo "<td>" . $row['nombretiposuscripcion'] . "</td>";
-                  echo "<td>" . $row['fechapago'] . "</td>";
-                  echo "<td>" . $row['total'] . " / " . $row['pagado'] . "</td>";
-                  echo "<td>" . $row['balance'] . "</td>";
-                  echo "<td>" . $row['expiracion'] . "</td>";
-                  $contador++;
+					<thead>
+						<tr>
+							<th>S.No</th><th>ID</th>
+							<th>Nombre</th>
+							<th>Fecha</th>
+							<th>Grasa Corporal</th>
+							<th>Agua</th>
+							<th>Musculo</th>
+							<th>Calorias</th>
+							<th>Huesos</th>
+							<th>Obsevaciones</th>
+							<th></th>
+						</tr>
+					</thead>
+				  <tbody>
+    				<?php
+    					$consulta  = "select * from estadosalud ORDER BY nombre DESC";
+    					$result = mysqli_query($con, $consulta);
+    					$contador    = 1;
+    					if (mysqli_affected_rows($con) != 0) {
+    					    while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+    					        $cambiar = $row['id'];
 
-                  echo "<td><form action='pagobalance.php' method='post'><input type='hidden' name='nombre' value='" . $row['factura'] . "'/><input type='submit' value='Balance de Pago ' class='btn btn-info'/></form></td></tr>";
-                  $cambiar  = 0;
-                  $contadorbal = $row['balance'] + $contadorbal;
-                }
-              }
-            ?>
-          </tbody>
-        </table>
-        <h3>Importe total sin pagar: <?php echo $contadorbal; ?></h3>
+    					        echo "<tr><td>" . $contador . "</td>";
+    					        echo "<td>" . $row['id'] . "</td>";
+    					        echo "<td>" . $row['nombre'] . "</td>";
+    					        echo "<td>" . $row['fecha1'] . "</td>";
+    					        echo "<td>" . $row['grasacorporal'] . "</td>";
+    					        echo "<td>" . $row['agua'] . "</td>";
+    					        echo "<td>" . $row['musculo'] . "</td>";
+    					        echo "<td>" . $row['calorias'] . "</td>";
+    					        echo "<td>" . $row['hueso'] . "</td>";
+    					        echo "<td>" . $row['observaciones'] . "</td>";
 
+    					     $contador++;
+    					        echo "<td><form action='editarvistasalud.php' method='post'><input type='hidden' name='nombre' value='" . $cambiar . "'/><input type='submit' value='Editar Vista Salud' class='btn btn-info'/></form><form action='borrarvistasalud.php' method='post' onSubmit='return ConfirmDelete();'><input type='hidden' name='nombre' value='" . $cambiar . "'/><input type='submit' value='Borrar Vista Salud' class='btn btn-danger'/></form></td></tr>";
+    					        $cambiar = 0;
+    					    }
+    					}
+    				?>
+					</tbody>
+				</table>
         <script type="text/javascript">
           jQuery(document).ready(function($){
             $("#tabla1").dataTable({
@@ -192,11 +184,13 @@
     <script src="../../js/neonjs/neon-login.js" id="script-resource-8"></script>
     <script src="../../js/neonjs/neon-custom.js" id="script-resource-9"></script>
     <script src="../../js/neonjs/neon-demo.js" id="script-resource-10"></script>
-  	<link rel="stylesheet" href="../../js/neonjs/select2/select2-bootstrap.css"  id="style-resource-1">
-  	<link rel="stylesheet" href="../../js/neonjs/select2/select2.css"  id="style-resource-2">
-  	<script src="../../js/neonjs/jquery.dataTables.min.js" id="script-resource-7"></script>
-  	<script src="../../js/neonjs/dataTables.bootstrap.js" id="script-resource-8"></script>
-  	<script src="../../js/neonjs/select2/select2.min.js" id="script-resource-9"></script>
+
+    <link rel="stylesheet" href="../../js/neonjs/select2/select2-bootstrap.css"  id="style-resource-1">
+    <link rel="stylesheet" href="../../js/neonjs/select2/select2.css"  id="style-resource-2">
+
+    <script src="../../js/neonjs/jquery.dataTables.min.js" id="script-resource-7"></script>
+    <script src="../../js/neonjs/dataTables.bootstrap.js" id="script-resource-8"></script>
+    <script src="../../js/neonjs/select2/select2.min.js" id="script-resource-9"></script>
 
     <script type="text/javascript">
       var campotexto1 = new Spry.Widget.ValidationTextField("campotexto1");

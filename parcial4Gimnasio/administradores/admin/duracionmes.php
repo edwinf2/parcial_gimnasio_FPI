@@ -1,6 +1,9 @@
 <?php
   require 'conexiondb.php';
   proteccionPagina();
+
+  if (isset($_POST['from'])) {
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -12,67 +15,32 @@
     <link rel="stylesheet" href="../../css/neoncss/font-icons/entypo/css/animation.css"  id="style-resource-3">
     <link rel="stylesheet" href="../../css/neoncss/neon.css"  id="style-resource-5">
     <link rel="stylesheet" href="../../css/neoncss/custom.css"  id="style-resource-6">
-  	<script src="../../js/eakroko.min.js"></script>
-  	<script src="../../js/application.min.js"></script>
-  	<script src="../../js/demonstration.min.js"></script>
-    <script src="../../js/neonjs/jquery-1.10.2.min.js"></script>
+
+  	<link rel="stylesheet" href="../../css/bootstrap.min.css">
+  	<link rel="stylesheet" href="../../css/bootstrap-responsive.min.css">
+  	<link rel="stylesheet" href="../../css/plugins/jquery-ui/smoothness/jquery-ui.css">
+  	<link rel="stylesheet" href="../../css/plugins/jquery-ui/smoothness/jquery.ui.theme.css">
+  	<link rel="stylesheet" href="../../css/plugins/datatable/TableTools.css">
+  	<link rel="stylesheet" href="../../css/plugins/chosen/chosen.css">
+  	<link rel="stylesheet" href="../../css/style.css">
+  	<link rel="stylesheet" href="../../css/themes.css">
+  	<script src="../../js/jquery.min.js"></script>
   	<script src="../../js/plugins/jquery-ui/jquery.ui.core.min.js"></script>
   	<script src="../../js/plugins/jquery-ui/jquery.ui.widget.min.js"></script>
   	<script src="../../js/plugins/jquery-ui/jquery.ui.mouse.min.js"></script>
   	<script src="../../js/plugins/jquery-ui/jquery.ui.resizable.min.js"></script>
-  	<script src="../../js/plugins/jquery-ui/jquery.ui.spinner.js"></script>
-	  <script src="../../js/ plugins/jquery-ui/jquery.ui.slider.js"></script>
+  	<script src="../../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+  	<script src="../../js/bootstrap.min.js"></script>
+  	<script src="../../js/plugins/bootbox/jquery.bootbox.js"></script>
+  	<script src="../../js/plugins/datatable/jquery.dataTables.min.js"></script>
+  	<script src="../../js/plugins/datatable/TableTools.min.js"></script>
+  	<script src="../../js/plugins/datatable/ColReorder.min.js"></script>
+  	<script src="../../js/plugins/datatable/ColVis.min.js"></script>
+  	<script src="../../js/plugins/chosen/chosen.jquery.min.js"></script>
+  	<script src="../../js/eakroko.min.js"></script>
+  	<script src="../../js/application.min.js"></script>
+  	<script src="../../js/demonstration.min.js"></script>
 
-    <script type="text/javascript">
-      $(document).ready(function(){
-        $(".pais").change(function(){
-          var id=$(this).val();
-          var dataString = 'id='+ id;
-
-          $.ajax({
-            type: "POST",
-            url: "ajaxciudad.php",
-            data: dataString,
-            cache: false,
-            success: function(html){
-              $(".ciudad").html(html);
-            }
-          });
-        });
-      });
-    </script>
-    <script type="text/javascript">
-      $(document).ready(function(){
-        $(".pais1").change(function(){
-          var id=$(this).val();
-          var dataString = 'id='+ id;
-
-          $.ajax({
-            type: "POST",
-            url: "ajaxciudad1.php",
-            data: dataString,
-            cache: false,
-            success: function(html){
-              $(".ciudad1").html(html);
-            }
-          });
-        });
-      });
-
-    </script>
-    <SCRIPT LANGUAGE="JavaScript">
-  		function checkIt(evt) {
-  		    evt = (evt) ? evt : window.event
-  		    var charCode = (evt.which) ? evt.which : evt.keyCode
-  		    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-  		        status = "Este campo solo acepta números."
-  		        return false
-  		    }
-  		    status = ""
-  		    return true
-  		}
-	   </SCRIPT>
-     <script type="text/javascript" src="webcam.js"></script>
   </head>
   <body class="page-body  page-fade">
     <div class="page-container">
@@ -112,75 +80,99 @@
             </ul>
           </div>
         </div>
-        <h2>Lista de miembros pendientes de pago</h2>
+        <h3>Miembros</h3>
         <hr/>
-        <table class="table table-bordered datatable" id="tabla1">
+        <?php
+            $de = $_POST['de'];
+            $para   = $_POST['para'];
+        ?>
+        Miembros de :
+
+    		<?php
+    		    echo $de;
+    		?>   A : <?php
+    		    echo $para;
+    		?>
+
+        <table class="table table-bordered datatable" id="table-1">
           <thead>
             <tr>
               <th>S.No</th>
-              <th>Recibo</th>
-              <th>Id Miembro</th>
+              <th>ID Membresia</th>
               <th>Nombre</th>
-              <th>Nombre del Plan</th>
-              <th>Fecha de Pago</th>
-              <th>Total / Pagado</th>
-              <th>Saldo</th>
-              <th>Expiración</th>
-              <th></th>
+              <th>Edad / Sexo</th>
+              <th>Inscripcion</th>
             </tr>
           </thead>
           <tbody>
             <?php
-              $consulta="select * from suscripcion WHERE balance>0 ORDER BY balance DESC";
-              $result=mysqli_query($con, $consulta);
-              $contador=1;
-              $contadorbal=0;
+              $consulta  = "select * from datosusuario WHERE fechainscripcion BETWEEN '$de' AND '$para'";
+              $result = mysqli_query($con, $consulta);
+              $contador    = 1;
               if (mysqli_affected_rows($con) != 0) {
                 while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-                  $cambiar   = $row['idmiembro'];
-                  $consulta1  = "select * from datosusuario WHERE cambiar='$cambiar'";
-                  $result1 = mysqli_query($con, $consulta1);
-                  if (mysqli_affected_rows($con) == 1) {
-                    while ($row1 = mysqli_fetch_array($result1, MYSQLI_ASSOC)) {
-                      echo "<td>" . $contador . "</td>";
-                      echo "<td>" . $row['factura'] . "</td>";
-                      echo "<td>" . $cambiar . "</td>";
-                      echo "<td>" . $row['nombre'] . "<img src='" . $row1['addfoto'] . "'></td>";
-                    }
-                  }
-                  echo "<td>" . $row['nombretiposuscripcion'] . "</td>";
-                  echo "<td>" . $row['fechapago'] . "</td>";
-                  echo "<td>" . $row['total'] . " / " . $row['pagado'] . "</td>";
-                  echo "<td>" . $row['balance'] . "</td>";
-                  echo "<td>" . $row['expiracion'] . "</td>";
+                  echo "<tr><td>" . $contador . "</td>";
+                  echo "<td>" . $row['cambiar'] . "</td>";
+                  echo "<td>" . $row['nombre'] . "</td>";
+                  echo "<td>" . $row['anios'] . " / " . $row['sex'] . "</td>";
+                  echo "<td>" . $row['fechainscripcion'] . "</td>";
                   $contador++;
-
-                  echo "<td><form action='pagobalance.php' method='post'><input type='hidden' name='nombre' value='" . $row['factura'] . "'/><input type='submit' value='Balance de Pago ' class='btn btn-info'/></form></td></tr>";
-                  $cambiar  = 0;
-                  $contadorbal = $row['balance'] + $contadorbal;
                 }
               }
             ?>
           </tbody>
         </table>
-        <h3>Importe total sin pagar: <?php echo $contadorbal; ?></h3>
+        <h4>Total de miembros en este rango de fechas :<?php echo $contador - 1; ?></h4>
+        <?php
+  				    $de = $_POST['de'];
+  				    $para   = $_POST['para'];
+  			?>
+        Pagos de Miembros de:
+        <?php
+  				    echo $de;
+  			?>   A :
+        <?php
+  				    echo $para;
+  			?>
 
-        <script type="text/javascript">
-          jQuery(document).ready(function($){
-            $("#tabla1").dataTable({
-              "sPaginationType": "bootstrap",
-              "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-              "bStateSave": true
-            });
-            $(".dataTables_wrapper select").select2({
-              minimumResultsForSearch: -1
-            });
-          });
-        </script>
+        <table class="table table-bordered datatable" id="table-1">
+          <thead>
+            <tr>
+              <th>S.No</th>
+              <th>ID Membresia</th>
+              <th>Nombre</th>
+              <th>Edad / Sexo</th>
+              <th>Inscripcion</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+                $consulta= "select * from suscripcion WHERE fechapago BETWEEN '$de' AND '$para'";
+                $result = mysqli_query($con, $consulta);
+                $contador    = 1;
+                $total  = 0;
+                if (mysqli_affected_rows($con) != 0) {
+                    while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+                        echo "<tr><td>" . $contador . "</td>";
+                        echo "<td>" . $row['idmiembro'] . "</td>";
+                        echo "<td>" . $row['nombre'] . "</td>";
+                        echo "<td>" . $row['total'] . " / " . $row['paid'] . "</td>";
+                        echo "<td>" . $row['expiracion'] . "</td>";
+                        echo "<td>" . $row['fechapago'] . "</td>";
+                        echo "<td>" . $row['factura'] . "</td>";
+                        $total = $total + $row['total'];
+                        $contador++;
+                    }
+                }
+            ?>
+          </tbody>
+        </table>
+        <h4>Pagos totales en este rango de fechas:<?php echo $contador - 1; ?></h4>
+        <h4>Ingreso total en este rango de fechas :<?php echo $total;?></h4>
+
         <?php include('piepagina.php'); ?>
       </div>
     </div>
-
 
     <script src="../../js/neonjs/gsap/main-gsap.js" id="script-resource-1"></script>
     <script src="../../js/neonjs/jquery-ui/js/jquery-ui-1.10.3.minimal.min.js" id="script-resource-2"></script>
@@ -197,6 +189,7 @@
   	<script src="../../js/neonjs/jquery.dataTables.min.js" id="script-resource-7"></script>
   	<script src="../../js/neonjs/dataTables.bootstrap.js" id="script-resource-8"></script>
   	<script src="../../js/neonjs/select2/select2.min.js" id="script-resource-9"></script>
+  	<script src="../../js/neonjs/bootstrap-datepicker.js" id="script-resource-11"></script>
 
     <script type="text/javascript">
       var campotexto1 = new Spry.Widget.ValidationTextField("campotexto1");
@@ -209,3 +202,7 @@
 
   </body>
 </html>
+<?php
+}
+
+?>
