@@ -142,7 +142,7 @@
 			<a href="pagos.php"><h1>Factura (Pagos)</h1></a>
       <address>
         <p>Gimnasio FPI</p>
-        <p>3UES Santa Ana</p>
+        <p>UES Santa Ana</p>
         <p></p><br><p><div id="barcodeTarget" class="barcodeTarget"></div>
         <span><canvas id="canvasTarget"></canvas> </span>
       </address>

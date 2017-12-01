@@ -1,6 +1,9 @@
 <?php
   require 'conexiondb.php';
   proteccionPagina();
+  if (isset($_POST['nombre'])) {
+      $idname = $_POST['nombre'];
+  }
 ?>
 <!DOCTYPE html>
 <html>
@@ -111,78 +114,64 @@
               </li>
             </ul>
           </div>
-
         </div>
-
-        <h3>Gimnasio FPI</h3>
-
+        <h3>Editar detalles del plan</h3>
         <hr/>
-        <table class="table table-bordered datatable" id="tabla1">
-          <thead>
-            <tr>
-              <th>Expiracion Membresia</th>
-              <th>Nombre / ID Miembro</th>
-              <th>Direccion / Contacto</th>
-              <th>Prueba</th>
-              <th>Correo Electronico/ Edad / Sexo</th>
-              <th>Altura / Peso</th>
-              <th>Altura / Peso</th>
-              <th>Accion</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php
-              $consulta  = "select * from datosusuario ORDER BY fechainscripcion DESC";
-              $result = mysqli_query($con, $consulta);
-              $contador    = 1;
-              if (mysqli_affected_rows($con) != 0) {
-                  while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-                      $cambiar   = $row['cambiar'];
-                      $consulta1  = "select * from subsciption WHERE idmiembro='$cambiar' AND renovacion='yes'";
-                      $result1 = mysqli_query($con, $consulta1);
-                      if (mysqli_affected_rows($con) == 1) {
-                          while ($row1 = mysqli_fetch_array($result1, MYSQLI_ASSOC)) {
+        <form action="submit_plan_edit.php" enctype="multipart/form-data" method="POST" role="form" class="form-horizontal form-groups-bordered">
 
+          <?php
+            $consulta="select * from tiposmemoria WHERE idtipomemoria='$idnombre'";
+            $result = mysqli_query($con, $consulta);
+            $contador=1;
 
-                              echo "<tr><td>" . $row1['expiracion'] . "</td>";
-                              $expiracion        = $row1['expiracion'];
-                              $nombretiposuscripcion = $row1['nombretiposuscripcion'];
-
-                              echo "<td>" . $row['name'] . " / " . $row['cambiar'] . "<img src='" . $row['addfoto'] . "'></td>";
-                              echo "<td>" . $row['direccion'] . " / " . $row['contacto'] . "</td>";
-                              echo "<td>" . $row['prueba'] . " / " . $row['otraprueba'] . "</td>";
-                              echo "<td>" . $row['email'] . " / " . $row['anios'] . " / " . $row['sexo'] . "</td>";
-                              echo "<td>" . $row['altura'] . " / " . $row['peso'] . "</td>";
-                              echo "<td>" . $row['fechainscripcion'] . " / " . $row1['nombretiposuscripcion'] . "</td>";
-
-                              $contador++;
-
-                              echo "<td><form action='leermiembro.php' method='post'><input type='hidden' name='nombre' value='" . $cambiar . "'/><input type='submit' value='Ver Historial ' class='btn btn-info'/></form><form action='editarmiembro.php' method='post'><input type='hidden' name='nombre' value='" . $cambiar . "'/><input type='submit' value='Editar' class='btn btn-warning'/></form><form action='borrarmiembro.php' method='post' onSubmit='return ConfirmDelete();'><input type='hidden' name='nombre' value='" . $cambiar . "'/><input type='submit' value='Borrar ' class='btn btn-danger'/></form></td></tr>";
-                              $cambiar = 0;
-                          }
-                      }
-                  }
-                }
-              ?>
-          </tbody>
-      </table>
-      <script type="text/javascript">
-        jQuery(document).ready(function($){
-          $("#tabla1").dataTable({
-            "sPaginationType": "bootstrap",
-            "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-            "bStateSave": true
-          });
-          $(".dataTables_wrapper select").select2({
-            minimumResultsForSearch: -1
-          });
-        });
-      </script>
-      <?php include('piepagina.php'); ?>
+            if (mysqli_affected_rows($con) == 1) {
+              while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+                $nombre    = $row['nombrecontrato'];
+                $dias    = $row['dias'];
+                $precio    = $row['precio'];
+                $detalles = $row['detalles'];
+              }
+            }
+          ?>
+          <div class="form-group">
+            <label for="field-1" class="col-sm-3 control-label">ID Plan :</label>
+            <div class="col-sm-5">
+              <input type="text" name="pid" value="<?php echo $idnombre; ?>" class="form-control" readonly/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="field-1" class="col-sm-3 control-label">Nombre :</label>
+            <div class="col-sm-5">
+              <input type="text" name="nombre" id="nombre" class="form-control" data-rule-required="true" data-rule-minlength="4" value ='<?php echo $nombre; ?>' placeholder="Nombre del Plan" maxlength="100">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="field-1" class="col-sm-3 control-label">Detalles :</label>
+            <div class="col-sm-5">
+              <input type="text" name="detalles"  id="detalles" class="form-control" value ='<?php echo $detalles; ?>'  data-rule-minlength="5" placeholder="E-Mail" maxlength="999">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="field-1" class="col-sm-3 control-label">Dias :</label>
+            <div class="col-sm-5">
+              <input type="text" name="dias" id="dias" class="form-control" data-rule-required="true" data-rule-minlength="1" placeholder="Days" value ='<?php echo $dias; ?>'  onKeyPress="return checkIt(event)" maxlength="3">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="field-1" class="col-sm-3 control-label">Precio :</label>
+            <div class="col-sm-5">
+              <input type="text" name="precio" id="precio" class="form-control" data-rule-required="true" data-rule-minlength="10" placeholder="Mobile / Phone" value ='<?php echo $precio; ?>'  onKeyPress="return checkIt(event)" maxlength="10">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-5">
+              <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+            </div>
+          </div>
+        </form>
+        <?php include('piepagina.php'); ?>
+      </div>
     </div>
-    </div>
-
-
     <script src="../../js/neonjs/gsap/main-gsap.js" id="script-resource-1"></script>
     <script src="../../js/neonjs/jquery-ui/js/jquery-ui-1.10.3.minimal.min.js" id="script-resource-2"></script>
     <script src="../../js/neonjs/bootstrap.min.js" id="script-resource-3"></script>
@@ -194,20 +183,5 @@
     <script src="../../js/neonjs/neon-custom.js" id="script-resource-9"></script>
     <script src="../../js/neonjs/neon-demo.js" id="script-resource-10"></script>
 
-  	<link rel="stylesheet" href="../../js/neonjs/select2/select2-bootstrap.css"  id="style-resource-1">
-  	<link rel="stylesheet" href="../../js/neonjs/select2/select2.css"  id="style-resource-2">
-
-  	<script src="../../js/neonjs/jquery.dataTables.min.js" id="script-resource-7"></script>
-  	<script src="../../js/neonjs/dataTables.bootstrap.js" id="script-resource-8"></script>
-  	<script src="../../js/neonjs/select2/select2.min.js" id="script-resource-9"></script>
-
-    <script type="text/javascript">
-      var campotexto1 = new Spry.Widget.ValidationTextField("campotexto1");
-      var campotexto2 = new Spry.Widget.ValidationTextField("campotexto2");
-      var seleccion1 = new Spry.Widget.ValidationSelect("seleccion1");
-      var campotexto3 = new Spry.Widget.ValidationTextField("campotexto3");
-      var campotexto4 = new Spry.Widget.ValidationTextField("campotexto5");
-      var seleccion2 = new Spry.Widget.ValidationSelect("seleccion2");
-    </script>
   </body>
 </html>

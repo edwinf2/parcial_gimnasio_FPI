@@ -111,75 +111,77 @@
               </li>
             </ul>
           </div>
-
         </div>
-
-        <h3>Gimnasio FPI</h3>
-
+        <h2>Lista de miembros pendientes de pago</h2>
         <hr/>
         <table class="table table-bordered datatable" id="tabla1">
           <thead>
             <tr>
-              <th>Expiracion Membresia</th>
-              <th>Nombre / ID Miembro</th>
-              <th>Direccion / Contacto</th>
-              <th>Prueba</th>
-              <th>Correo Electronico/ Edad / Sexo</th>
-              <th>Altura / Peso</th>
-              <th>Altura / Peso</th>
-              <th>Accion</th>
+              <th>S.No</th>
+              <th>Recibo</th>
+              <th>Id Miembro</th>
+              <th>Nombre</th>
+              <th>Nombre del Plan</th>
+              <th>Fecha de Pago</th>
+              <th>Total / Pagado</th>
+              <th>Saldo</th>
+              <th>Expiración</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
             <?php
-              $consulta  = "select * from datosusuario ORDER BY fechainscripcion DESC";
-              $result = mysqli_query($con, $consulta);
-              $contador    = 1;
+              $consulta="select * from suscripcion WHERE balance>0 ORDER BY balance DESC";
+              $result=mysqli_query($con, $consulta);
+              $contador=1;
+              $contadorbal=0;
               if (mysqli_affected_rows($con) != 0) {
-                  while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-                      $cambiar   = $row['cambiar'];
-                      $consulta1  = "select * from subsciption WHERE idmiembro='$cambiar' AND renovacion='yes'";
-                      $result1 = mysqli_query($con, $consulta1);
-                      if (mysqli_affected_rows($con) == 1) {
-                          while ($row1 = mysqli_fetch_array($result1, MYSQLI_ASSOC)) {
+                while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+                  $cambiar   = $row['idmiembro'];
+                  $consulta1  = "select * from datosusuario WHERE cambiar='$cambiar'";
+                  $result1 = mysqli_query($con, $consulta1);
+                  if (mysqli_affected_rows($con) == 1) {
+                    while ($row1 = mysqli_fetch_array($result1, MYSQLI_ASSOC)) {
 
 
-                              echo "<tr><td>" . $row1['expiracion'] . "</td>";
-                              $expiracion        = $row1['expiracion'];
-                              $nombretiposuscripcion = $row1['nombretiposuscripcion'];
 
-                              echo "<td>" . $row['name'] . " / " . $row['cambiar'] . "<img src='" . $row['addfoto'] . "'></td>";
-                              echo "<td>" . $row['direccion'] . " / " . $row['contacto'] . "</td>";
-                              echo "<td>" . $row['prueba'] . " / " . $row['otraprueba'] . "</td>";
-                              echo "<td>" . $row['email'] . " / " . $row['anios'] . " / " . $row['sexo'] . "</td>";
-                              echo "<td>" . $row['altura'] . " / " . $row['peso'] . "</td>";
-                              echo "<td>" . $row['fechainscripcion'] . " / " . $row1['nombretiposuscripcion'] . "</td>";
-
-                              $contador++;
-
-                              echo "<td><form action='leermiembro.php' method='post'><input type='hidden' name='nombre' value='" . $cambiar . "'/><input type='submit' value='Ver Historial ' class='btn btn-info'/></form><form action='editarmiembro.php' method='post'><input type='hidden' name='nombre' value='" . $cambiar . "'/><input type='submit' value='Editar' class='btn btn-warning'/></form><form action='borrarmiembro.php' method='post' onSubmit='return ConfirmDelete();'><input type='hidden' name='nombre' value='" . $cambiar . "'/><input type='submit' value='Borrar ' class='btn btn-danger'/></form></td></tr>";
-                              $cambiar = 0;
-                          }
-                      }
+                    echo "<td>" . $contador . "</td>";
+                    echo "<td>" . $row['factura'] . "</td>";
+                    echo "<td>" . $cambiar . "</td>";
+                    echo "<td>" . $row['nombre'] . "<img src='" . $row1['addfoto'] . "'></td>";
                   }
+                  }
+                  echo "<td>" . $row['nombretiposuscripcion'] . "</td>";
+                  echo "<td>" . $row['fechapago'] . "</td>";
+                  echo "<td>" . $row['total'] . " / " . $row['pagado'] . "</td>";
+                  echo "<td>" . $row['balance'] . "</td>";
+                  echo "<td>" . $row['expiracion'] . "</td>";
+                  $contador++;
+
+                  echo "<td><form action='balancedepago.php' method='post'><input type='hidden' name='nombre' value='" . $row['factura'] . "'/><input type='submit' value='Balance de Pago ' class='btn btn-info'/></form></td></tr>";
+                  $cambiar  = 0;
+                  $contadorbal = $row['balance'] + $contadorbal;
                 }
-              ?>
+              }
+            ?>
           </tbody>
-      </table>
-      <script type="text/javascript">
-        jQuery(document).ready(function($){
-          $("#tabla1").dataTable({
-            "sPaginationType": "bootstrap",
-            "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-            "bStateSave": true
+        </table>
+        <h3>Importe total sin pagar: <?php echo $contadorbal; ?></h3>
+
+        <script type="text/javascript">
+          jQuery(document).ready(function($){
+            $("#tabla1").dataTable({
+              "sPaginationType": "bootstrap",
+              "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+              "bStateSave": true
+            });
+            $(".dataTables_wrapper select").select2({
+              minimumResultsForSearch: -1
+            });
           });
-          $(".dataTables_wrapper select").select2({
-            minimumResultsForSearch: -1
-          });
-        });
-      </script>
-      <?php include('piepagina.php'); ?>
-    </div>
+        </script>
+        <?php include('piepagina.php'); ?>
+      </div>
     </div>
 
 
@@ -209,5 +211,6 @@
       var campotexto4 = new Spry.Widget.ValidationTextField("campotexto5");
       var seleccion2 = new Spry.Widget.ValidationSelect("seleccion2");
     </script>
+
   </body>
 </html>

@@ -73,6 +73,7 @@
   		}
 	   </SCRIPT>
      <script type="text/javascript" src="webcam.js"></script>
+
   </head>
   <body class="page-body  page-fade">
     <div class="page-container">
@@ -114,72 +115,61 @@
 
         </div>
 
-        <h3>Gimnasio FPI</h3>
-
+        <h3>Plan de Membresia</h3>
         <hr/>
         <table class="table table-bordered datatable" id="tabla1">
-          <thead>
-            <tr>
-              <th>Expiracion Membresia</th>
-              <th>Nombre / ID Miembro</th>
-              <th>Direccion / Contacto</th>
-              <th>Prueba</th>
-              <th>Correo Electronico/ Edad / Sexo</th>
-              <th>Altura / Peso</th>
-              <th>Altura / Peso</th>
-              <th>Accion</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php
-              $consulta  = "select * from datosusuario ORDER BY fechainscripcion DESC";
-              $result = mysqli_query($con, $consulta);
-              $contador    = 1;
-              if (mysqli_affected_rows($con) != 0) {
-                  while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-                      $cambiar   = $row['cambiar'];
-                      $consulta1  = "select * from subsciption WHERE idmiembro='$cambiar' AND renovacion='yes'";
-                      $result1 = mysqli_query($con, $consulta1);
-                      if (mysqli_affected_rows($con) == 1) {
-                          while ($row1 = mysqli_fetch_array($result1, MYSQLI_ASSOC)) {
+    			<thead>
+    				<tr>
+    					<th>S. No</th>
+    					<th>Id Miembro</th>
+    					<th>Nombre del Plan</th>
+    					<th>Detalles</th>
+    					<th>Dias</th>
+    					<th>Rate</th>
+    					<th></th>
+    				</tr>
+    			</thead>
+  				<tbody>
+  					<?php
+    					$consulta  = "select * from tiposmemoria ORDER BY precio DESC";
+    					$result = mysqli_query($con, $consulta);
+    					$contador    = 1;
+    					if (mysqli_affected_rows($con) != 0) {
+    					    while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+    					        $cambiar = $row['idtipomemoria'];
 
+    					        echo "<tr><td>" . $contador . "</td>";
+    					        echo "<td>" . $row['idtipomemoria'] . "</td>";
+    					        echo "<td>" . $row['nombrecontrato'] . "</td>";
+    					        echo "<td>" . $row['detalles'] . "</td>";
+    					        echo "<td>" . $row['dias'] . "</td>";
+    					        echo "<td>" . $row['precio'] . "</td>";
 
-                              echo "<tr><td>" . $row1['expiracion'] . "</td>";
-                              $expiracion        = $row1['expiracion'];
-                              $nombretiposuscripcion = $row1['nombretiposuscripcion'];
+    					        $contador++;
 
-                              echo "<td>" . $row['name'] . " / " . $row['cambiar'] . "<img src='" . $row['addfoto'] . "'></td>";
-                              echo "<td>" . $row['direccion'] . " / " . $row['contacto'] . "</td>";
-                              echo "<td>" . $row['prueba'] . " / " . $row['otraprueba'] . "</td>";
-                              echo "<td>" . $row['email'] . " / " . $row['anios'] . " / " . $row['sexo'] . "</td>";
-                              echo "<td>" . $row['altura'] . " / " . $row['peso'] . "</td>";
-                              echo "<td>" . $row['fechainscripcion'] . " / " . $row1['nombretiposuscripcion'] . "</td>";
+    					        echo "<td><form action='editarplan.php' method='post'><input type='hidden' name='nombre' value='" . $cambiar . "'/><input type='submit' value='Editar Plan ' class='btn btn-info'/></form><form action='borrarplan.php' method='post' onSubmit='return ConfirmDelete();'><input type='hidden' name='nombre' value='" . $cambiar . "'/><input type='submit' value='Borrar Plan' class='btn btn-danger'/></form></td></tr>";
+    					        $cambiar = 0;
+    					    }
+    					}
+  					?>
+  				</tbody>
+    		</table>
+        <script type="text/javascript">
+        	jQuery(document).ready(function($)
+        	{
+        		$("#tabla1").dataTable({
+        			"sPaginationType": "bootstrap",
+        			"aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        			"bStateSave": true
+        		});
 
-                              $contador++;
-
-                              echo "<td><form action='leermiembro.php' method='post'><input type='hidden' name='nombre' value='" . $cambiar . "'/><input type='submit' value='Ver Historial ' class='btn btn-info'/></form><form action='editarmiembro.php' method='post'><input type='hidden' name='nombre' value='" . $cambiar . "'/><input type='submit' value='Editar' class='btn btn-warning'/></form><form action='borrarmiembro.php' method='post' onSubmit='return ConfirmDelete();'><input type='hidden' name='nombre' value='" . $cambiar . "'/><input type='submit' value='Borrar ' class='btn btn-danger'/></form></td></tr>";
-                              $cambiar = 0;
-                          }
-                      }
-                  }
-                }
-              ?>
-          </tbody>
-      </table>
-      <script type="text/javascript">
-        jQuery(document).ready(function($){
-          $("#tabla1").dataTable({
-            "sPaginationType": "bootstrap",
-            "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-            "bStateSave": true
-          });
-          $(".dataTables_wrapper select").select2({
-            minimumResultsForSearch: -1
-          });
-        });
-      </script>
-      <?php include('piepagina.php'); ?>
-    </div>
+        		$(".dataTables_wrapper select").select2({
+        			minimumResultsForSearch: -1
+        		});
+        	});
+        </script>
+        <?php include('piepagina.php'); ?>
+      </div>
     </div>
 
 

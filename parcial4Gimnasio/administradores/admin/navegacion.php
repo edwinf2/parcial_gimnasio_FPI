@@ -66,12 +66,12 @@
     </a>
 		<ul>
 			<li class="active">
-				<a href="mesmiembros.php">
+				<a href="miembrospormes.php">
           <span>Miembros por mes</span>
         </a>
 			</li>
 			<li>
-				<a href="aniomiembros.php">
+				<a href="miembrosporanio.php">
           <span>Miembros por Año</span>
         </a>
 			</li>
@@ -94,7 +94,7 @@
         </a>
 			</li>
 			<li>
-				<a href="finalsub.php">
+				<a href="suscripcionfinal.php">
           <span>Termino de Membresia</span>
         </a>
 			</li>
