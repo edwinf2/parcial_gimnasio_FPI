@@ -1,3 +1,6 @@
+<head>
+  <link rel="stylesheet" href="vermiembro.php">
+</head>
 <ul id="main-menu" class="">
   <li class="active opened active">
     <a href="index.php">
@@ -25,7 +28,7 @@
 		<ul>
 			<li class="active">
 				<a href="vermiembro.php">
-          <span>Ver Miembros</span>
+          <span onclick="miembros();">Ver Miembros</span>
         </a>
       </li>
 			<li>
@@ -66,12 +69,12 @@
     </a>
 		<ul>
 			<li class="active">
-				<a href="mesmiembros.php">
+				<a href="miembrospormes.php">
           <span>Miembros por mes</span>
         </a>
 			</li>
 			<li>
-				<a href="aniomiembros.php">
+				<a href="miembrosporanio.php">
           <span>Miembros por Año</span>
         </a>
 			</li>
@@ -94,7 +97,7 @@
         </a>
 			</li>
 			<li>
-				<a href="finalsub.php">
+				<a href="suscripcionfinal.php">
           <span>Termino de Membresia</span>
         </a>
 			</li>

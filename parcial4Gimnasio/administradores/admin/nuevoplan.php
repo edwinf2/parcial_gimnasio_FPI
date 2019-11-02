@@ -133,7 +133,7 @@
     							}
 
     						?>
-    						<input type="text" name="p_id" value="<?php echo getRandomWord(); ?>" class="form-control"  readonly/>
+    						<input type="text" name="pid" value="<?php echo getRandomWord(); ?>" class="form-control"  readonly/>
     					</div>
     			</div>
     			<div class="form-group">
@@ -157,7 +157,7 @@
     			<div class="form-group">
     				<label for="field-1" class="col-sm-3 control-label">Precio:</label>
     					<div class="col-sm-5">
-    						<input type="text" name="precio" id="precio" class="form-control" data-rule-required="true" data-rule-minlength="10" placeholder="Celular"  placeholder="Precio"  onKeyPress="return checkIt(event)" maxlength="10">
+    						<input type="text" name="precio" id="precio" class="form-control" data-rule-required="true" data-rule-minlength="10" placeholder="Precio" onKeyPress="return checkIt(event)" maxlength="10">
     					</div>
     			</div>
     			<div class="form-group">

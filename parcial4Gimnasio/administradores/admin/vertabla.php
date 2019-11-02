@@ -143,7 +143,7 @@
   						if (mysqli_affected_rows($con) != 0) {
   						    while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
   						        $cambiar   = $row['cambiar'];
-  						        $consulta1  = "select * from suscripcion WHERE mem_id='$cambiar' AND renovacion='yes'";
+  						        $consulta1  = "select * from suscripcion WHERE idmiembro='$cambiar' AND renovacion='yes'";
   						        $result1 = mysqli_query($con, $consulta1);
   						        if (mysqli_affected_rows($con) == 1) {
   						            while ($row1 = mysqli_fetch_array($result1, MYSQLI_ASSOC)) {

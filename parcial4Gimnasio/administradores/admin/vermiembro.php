@@ -42,26 +42,21 @@
       });
     </script>
     <script type="text/javascript">
-      $(document).ready(function()
-      {
-      $(".pais1").change(function()
-      {
-      var id=$(this).val();
-      var dataString = 'id='+ id;
+      $(document).ready(function(){
+        $(".pais1").change(function(){
+          var id=$(this).val();
+          var dataString = 'id='+ id;
 
-      $.ajax
-      ({
-      type: "POST",
-      url: "ajaxciudad1.php",
-      data: dataString,
-      cache: false,
-      success: function(html)
-      {
-      $(".ciudad1").html(html);
-      }
-      });
-
-      });
+          $.ajax({
+            type: "POST",
+            url: "ajaxciudad1.php",
+            data: dataString,
+            cache: false,
+            success: function(html){
+              $(".ciudad1").html(html);
+            }
+          });
+        });
       });
 
     </script>
@@ -125,66 +120,62 @@
         <table class="table table-bordered datatable" id="tabla1">
           <thead>
             <tr>
-              <th>Expiracion Membresia</th>
               <th>Nombre / ID Miembro</th>
-              <th>Direccion / Contacto</th>
-              <th>Prueba</th>
-              <th>Correo Electronico/ Edad / Sexo</th>
-              <th>Altura / Peso</th>
-              <th>Altura / Peso</th>
-              <th>Accion</th>
+              <th>Fecha de inscripcion</th>
+              <th>Email</th>
+              <th>direccion</th>
+              <th>Años</th>
+              <th>Altura</th>
             </tr>
           </thead>
-          <tbody>
-            <?php
-              $consulta  = "select * from datosusuario ORDER BY fechainscripcion DESC";
-              $result = mysqli_query($con, $consulta);
-              $contador    = 1;
-              if (mysqli_affected_rows($con) != 0) {
-                  while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-                      $cambiar   = $row['cambiar'];
-                      $consulta1  = "select * from subsciption WHERE idmiembro='$cambiar' AND renovacion='yes'";
-                      $result1 = mysqli_query($con, $consulta1);
-                      if (mysqli_affected_rows($con) == 1) {
-                          while ($row1 = mysqli_fetch_array($result1, MYSQLI_ASSOC)) {
+          <tbody id="miembro">
 
-
-                              echo "<tr><td>" . $row1['expiracion'] . "</td>";
-                              $expiracion        = $row1['expiracion'];
-                              $nombretiposuscripcion = $row1['nombretiposuscripcion'];
-
-                              echo "<td>" . $row['name'] . " / " . $row['cambiar'] . "<img src='" . $row['addfoto'] . "'></td>";
-                              echo "<td>" . $row['direccion'] . " / " . $row['contacto'] . "</td>";
-                              echo "<td>" . $row['prueba'] . " / " . $row['otraprueba'] . "</td>";
-                              echo "<td>" . $row['email'] . " / " . $row['anios'] . " / " . $row['sexo'] . "</td>";
-                              echo "<td>" . $row['altura'] . " / " . $row['peso'] . "</td>";
-                              echo "<td>" . $row['fechainscripcion'] . " / " . $row1['nombretiposuscripcion'] . "</td>";
-
-                              $contador++;
-
-                              echo "<td><form action='leermiembro.php' method='post'><input type='hidden' name='nombre' value='" . $cambiar . "'/><input type='submit' value='Ver Historial ' class='btn btn-info'/></form><form action='editarmiembro.php' method='post'><input type='hidden' name='nombre' value='" . $cambiar . "'/><input type='submit' value='Editar' class='btn btn-warning'/></form><form action='borrarmiembro.php' method='post' onSubmit='return ConfirmDelete();'><input type='hidden' name='nombre' value='" . $cambiar . "'/><input type='submit' value='Borrar ' class='btn btn-danger'/></form></td></tr>";
-                              $cambiar = 0;
-                          }
-                      }
-                  }
-                }
-              ?>
           </tbody>
       </table>
+      <script type="text/javascript">
+      function miembros(){
+        var miembros;
+        var xhttp=new XMLHttpRequest();
+        xhttp.onreadystatechange=function(){
+          if (this.readyState==4 && this.status==200) {
+            miembros=JSON.parse(this.responseText);
+            var tabla=document.getElementById("miembro");
+            var tr=document.createElement("tr");
+            var td1=document.createElement("td");
+            var td2=document.createElement("td");
+            var td3=document.createElement("td");
+            var td4=document.createElement("td");
+            var td5=document.createElement("td");
+            var td6=document.createElement("td");
 
-        <script type="text/javascript">
-          jQuery(document).ready(function($){
-            $("#tabla1").dataTable({
-              "sPaginationType": "bootstrap",
-              "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-              "bStateSave": true
-            });
-            $(".dataTables_wrapper select").select2({
-              minimumResultsForSearch: -1
-            });
+            td1.appendChild(document.createTextNode(miembro[0].nombre));
+            td2.appendChild(document.createTextNode(miembro[0].fechaInscripcion));
+            td3.appendChild(document.createTextNode(miembro[0].email));
+            td4.appendChild(document.createTextNode(miembro[0].direccion));
+            td5.appendChild(document.createTextNode(miembro[0].anios));
+            td6.appendChild(document.createTextNode(miembro[0].altura));
+            console.log("hola");
+          }
+
+        };
+        xhttp.open("GET", "192.168.43.201:8080/Gimnasio/webresources/gimnasio/datoUsuario/", true);
+        xhttp.send();
+      }
+
+      </script>
+      <script type="text/javascript">
+        jQuery(document).ready(function($){
+          $("#tabla1").dataTable({
+            "sPaginationType": "bootstrap",
+            "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            "bStateSave": true
           });
-        </script>
-        <?php include('piepagina.php'); ?>
+          $(".dataTables_wrapper select").select2({
+            minimumResultsForSearch: -1
+          });
+        });
+      </script>
+      <?php include('piepagina.php'); ?>
     </div>
     </div>
 
@@ -208,12 +199,12 @@
   	<script src="../../js/neonjs/select2/select2.min.js" id="script-resource-9"></script>
 
     <script type="text/javascript">
-      var campotexto1 = new Spry.Widget.ValidationTextField("campotexto1");
-      var campotexto2 = new Spry.Widget.ValidationTextField("campotexto2");
-      var seleccion1 = new Spry.Widget.ValidationSelect("seleccion1");
-      var campotexto3 = new Spry.Widget.ValidationTextField("campotexto3");
-      var campotexto4 = new Spry.Widget.ValidationTextField("campotexto5");
-      var seleccion2 = new Spry.Widget.ValidationSelect("seleccion2");
+  		var sprytextfield1 = new Spry.Widget.ValidationTextField("sprytextfield1");
+  		var sprytextfield2 = new Spry.Widget.ValidationTextField("sprytextfield2");
+  		var spryselect1 = new Spry.Widget.ValidationSelect("spryselect1");
+  		var sprytextfield3 = new Spry.Widget.ValidationTextField("sprytextfield3");
+  		var sprytextfield4 = new Spry.Widget.ValidationTextField("sprytextfield4");
+  		var spryselect2 = new Spry.Widget.ValidationSelect("spryselect2");
     </script>
   </body>
 </html>
